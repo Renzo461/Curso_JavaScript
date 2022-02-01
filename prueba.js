@@ -22,12 +22,8 @@ function montoVenta(){
     console.log("Cantidad de Productos "+carrito.length)
     console.log("Precio Total: "+monto)
 }
-juegosStock.forEach(juego => {
-    console.log("["+juego.id+"]"+"     "+juego.nombre+"\t\t\t\t\t")    
-});
-console.log("["+(juegosStock.length+1)+"]"+"     Salir")
 do{
-    opcion=prompt("Elija un juego: (6 para salir)")
+    opcion=prompt("["+(juegosStock[0].id)+"]"+"     "+juegosStock[0].nombre+"\n["+(juegosStock[1].id)+"]"+"     "+juegosStock[1].nombre+"\n["+(juegosStock[2].id)+"]"+"     "+juegosStock[2].nombre+"\n["+(juegosStock[3].id)+"]"+"     "+juegosStock[3].nombre+"\n["+(juegosStock[4].id)+"]"+"     "+juegosStock[4].nombre+"\n["+(juegosStock.length+1)+"]"+"     Salir")
     if (opcion>=1&&opcion<=5){
         venta(opcion)        
     }
