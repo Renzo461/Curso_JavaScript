@@ -27,7 +27,7 @@ juegosStock.forEach(juego => {
 });
 console.log("["+(juegosStock.length+1)+"]"+"     Salir")
 do{
-    opcion=prompt("Elija un juego: ")
+    opcion=prompt("Elija un juego: (6 para salir)")
     if (opcion>=1&&opcion<=5){
         venta(opcion)        
     }
