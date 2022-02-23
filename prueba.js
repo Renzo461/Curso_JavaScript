@@ -51,7 +51,7 @@ pintarJuegos(juegosStock);
 stock.addEventListener("click",e=>{
   if(e.target.classList.contains("juego-botonVenta")){
     let compra = juegosStock.find(juego => juego.idJuego == (e.target.id))
-    let verificar = carrito.indexOf(carrito.find(juego => juego.id == (e.target.id)))
+    let verificar = carrito.indexOf(carrito.find(juego => juego.idJuego == (e.target.id)))
     if (verificar == -1) {
       carrito.push(new VENTA((carrito.length+1),compra.idJuego, compra.nombre, compra.precio, compra.precioPromocional, 1))
     }
@@ -65,6 +65,7 @@ stock.addEventListener("click",e=>{
       }
     }       
     pintarCarrito(carrito)
+    console.log(carrito)
   }
 })
 /
