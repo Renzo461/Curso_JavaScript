@@ -1,159 +1,207 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  body{
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      min-height: 100vh;;
-  }  
-  main {
-    padding: 2rem 10rem;
-    background: radial-gradient(circle, #4c15c2 0%, #0b9eb3 100%);        
-  }
-  
-  img {
-    width: 100%;
-    height: 100%;
-  }
-  
-  .juegos {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .juegos .juego {
-    z-index: 2;
-    width: 14rem;
-    position: relative;
-    margin: 1rem;
-  }
-  .juegos .juego::before {
-    z-index: 1;
-    content: "";
-    width: 104%;
-    height: 103%;
-    position: absolute;
-    z-index: -2;
-    background: white;
-    top: -1.5%;
-    left: -2%;
-    border-radius: 0.3rem;
-    opacity: 0.7;
-    box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.25);
-  }
-  .juegos .juego .imagen {
-    width: 14rem;
-    position: relative;
-  }
-  .juegos .juego .imagen img {
-    border-radius: 0.5rem;
-  }
-  .juegos .juego .imagen .precio {
-    position: absolute;
-    color: white;
-    bottom: 0;
-    left: 0;
-    padding: 0.3rem;
-  }
-  .juegos .juego .imagen .precio p {
-    font-size: 1.25rem;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.25),2px 2px 2px rgba(0,0,0,1);
-  }
-  .juegos .juego .imagen .descuento {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-  .juegos .juego .imagen .descuento .contenedor {
-    position: absolute;
-    background: #ce2626;
-    text-align: center;
-    width: 150%;
-    padding: 0.3rem 0;
-    transform: rotate(45deg) translateY(-15px);
-    box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, 0.4),0 0 2px 1px rgba(0,0,0,0.3);
-  }
-  .juegos .juego .imagen .descuento .contenedor p {
-    font-size: 1.25rem;
-    color: white;
-  }
-  .juegos .juego .texto {
-    padding: 0.3rem 0;
-    text-align: center;
-  }
-  .juegos .juego .texto h1 {
-    font-size: 1rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .juegos .juego .boton button {
-    color: white;
-    border-radius: 5px;    
-    cursor: pointer;
-    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5), 7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);    
-    padding: 0.3rem 0;
-    width: 100%;
-    font-size: 1rem;
-    border: none;
-    background: linear-gradient(135deg, #d6991d 0%, #dd1818 49%);
-  }
-  .carrito{
-    margin: 0.3rem 0rem;    
-  }
-  .carrito .titulo h1{    
-    font-size: 1.8rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.247);
-  }
-  .venta{
-    padding: 1rem 0.5rem;
-    display: flex;
-    flex-direction: column;
-  }
-  .ventaJuego{
-    display: flex;
-    justify-content: flex-end;    
-    align-items: center;
-    margin: 0.5rem 0;
-  }
-  .ventaNombre{    
-    width: 300px;
-    font-size: 1.3rem;
-    text-transform: capitalize;
-  }
-  .ventaPrecio{
-    width: 100px;
-    font-size: 1.5rem;
-  }
-  .eliminar{
-    padding: 0.3rem 1rem;
-    border: none;
-    font-size: 1.3rem;
-    background-color: rgb(219, 35, 35);
-    color: white;
-    border-radius: 5px;
-    box-shadow: inset 1px 1px 2px 1px rgba(255, 255, 255, 0.295),1px 1px 2px 1px rgba(0, 0, 0, 0.205), 2px 2px 2px 2px rgba(0, 0, 0, 0.123);
-  }
-  .total{
-    margin-top: 1rem;
-    margin-right: 172px;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;    
-  }
-  .total h1{
-    font-size: 1.75rem;
-    margin-right: 2rem;
-  }
-  .total p{
-    font-size: 1.5rem;
-  }
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Rubik', sans-serif;
+}
+img{
+  width: 100%;
+  height: 100%;
+}
+body{
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;  
+}
+header, footer{
+  background-color: black;
+  height: 2rem;
+}
+main{  
+  padding: 0 19vw;  
+}
+.listaJuegos{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+/* Relacion Imagen 5:7 */
+.juego{
+  position: relative;
+  width: 200px;
+  margin: 1rem;
+}
+.juego::after{
+  z-index: -1;
+  content: "";
+  position: absolute;
+  top: -2%;
+  left: -2%;
+  width: 104%;
+  height: 104%;
+  background-color: rgba(83, 80, 80, 0.2);
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.3),0px 0px 2px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+.juego-logo{  
+  position: relative;
+  height: 280px;
+}
+.juego-logo img{
+  border-radius: 5px;  
+}
+.juego-logo-descuento{
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.juego-logo-descuento-contenedor{
+  position: absolute;
+  transform: rotate(45deg) translateY(-18px);
+  width: 150%;
+  padding: 0.5rem 0;
+  text-align: center;
+  background: linear-gradient(90deg,rgb(199, 33, 102),rgb(211, 32, 32));
+  box-shadow: inset 0px 0px 5px 1px rgb(0, 0, 0,0.45),0px 0px 5px 1px rgba(0,0,0,0.45);
+}
+.juego-logo-precio{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 0.5rem;
+  border-bottom-left-radius: 5px;
+  background-color: rgba(0,0,0,0.8);
+}
+.juego-logo-precio p{  
+  font-weight: 500;
+  color: white;
+}
+.juego-botonVenta{
+  width: 100%;
+  border: none;
+  background: linear-gradient(135deg,rgb(1, 238, 255),rgb(9, 71, 187));
+  box-shadow: inset 1px 1px 3px 1px rgba(255, 255, 255, 0.6),1px 1px 2px 1px rgba(0, 0, 0, 0.3),1px 1px 2px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  margin-top: 5px;
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+.compra{
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+}
+.carrito{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.carrito-cabecera{
+  display: flex;
+  align-items: center;
+  width: 650px;
+  font-weight: 900;
+  padding: 1rem;
+}
+.carrito-titulo{
+  margin-right: 1rem;
+  width: 200px;
+}
+.carrito-precio{
+  margin-right: 1rem;
+  width: 120px;
+}
+.carrito-cantidad{
+  margin-right: 1rem;
+  width: 120px;
+}
+.carrito-subTotal{
+  margin-right: 1rem;
+}
+.carrito .detalle:first-child{
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+.carrito .detalle:last-child{
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.detalle,.detalle{
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  width: 650px;
+  border: solid 1px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(90deg,rgba(110, 110, 110, 0.3),rgba(200, 200, 200, 0.3)40%);
+}
+.detalle-nombre{
+  text-transform: uppercase;  
+  margin-right: 1rem;
+  width: 200px;
+}
+.detalle-precio{
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  width: 120px;
+}
+.detalle-precio-antes{
+  text-decoration: line-through;
+  margin-right: 3px;
+  color: rgb(130, 130, 130);  
+}
+.detalle-precio-ahora{
+  font-weight: 500;
+  font-size: 1.125rem;
+}
+.detalle-cantidad{
+  display: flex;
+  align-items: baseline;  
+  margin-right: 1rem;
+  width: 120px;
+}
+.menos,.mas{
+  border: solid 1px rgb(190, 190, 190);
+  color: white;
+  border-radius: 3px;
+  padding: 0 4px;
+  font-size: 1.125rem;
+  font-weight: 900;
+  cursor: pointer;
+  display: none;
+}
+.menos{
+  background-color: rgb(55, 55, 216);
+}
+.mas{
+  background-color: rgb(216, 55, 55);
+}
+.detalle-cantidad p{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.detalle-subTotal{
+  width: 50px;
+  margin-right: 1rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+.detalle-eliminar{
+  width: 30px;
+}
+.eliminar{
+  border: solid 1px rgba(0, 0, 0, 1);
+  border-radius: 10rem;  
+  width: 25px;
+  height: 25px;
+  background-color: rgba(255, 0, 0, 0.8);
+  font-weight: 700;
+  cursor: pointer;
+}
