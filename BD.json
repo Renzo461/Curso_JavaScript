@@ -1,0 +1,12 @@
+[
+    {"idJuego": 1,"nombre": "Age of Empires IV","precio": 60,"descuento": 0.2,"precioPromocional": 48,"imagen": "./Juegos/ageOfEmpiresiv.jpg"},
+    {"idJuego": 2,"nombre": "Beyond Good and Evil 2","precio": 70,"descuento": 0,"precioPromocional": 70,"imagen": "./Juegos/beyondGoodEvi.jpg"},
+    {"idJuego": 3,"nombre": "Blue Protocol","precio": 50,"descuento": 0.15,"precioPromocional": 42.5,"imagen": "./Juegos/bluProtocol.jpg"},
+    {"idJuego": 4,"nombre": "Dead Island 2","precio": 20,"descuento": 0,"precioPromocional": 20,"imagen": "./Juegos/deadIsland2.jpg"},
+    {"idJuego": 5,"nombre": "Elden Ring","precio": 60,"descuento": 0,"precioPromocional": 60,"imagen": "./Juegos/eldenRring.jpg"},
+    {"idJuego": 6,"nombre": "FarCry 6","precio": 60,"descuento": 0.1,"precioPromocional": 54,"imagen": "./Juegos/farcry6.jpg"},
+    {"idJuego": 7,"nombre": "Forza Horizon 5","precio": 60,"descuento": 0.1,"precioPromocional": 54,"imagen": "./Juegos/forzahorizon5.jpg"},
+    {"idJuego": 8,"nombre": "Hitman 3","precio": 60,"descuento": 0,"precioPromocional": 60,"imagen": "./Juegos/hitman3.jpg"},
+    {"idJuego": 9,"nombre": "Little Nightmares 2","precio": 30,"descuento": 0.25,"precioPromocional": 22.5,"imagen": "./Juegos/littlenightmares2.jpg"},
+    {"idJuego": 10,"nombre": "Medium","precio": 50,"descuento": 0.2,"precioPromocional": 40,"imagen": "./Juegos/medium.jpg"}
+]
