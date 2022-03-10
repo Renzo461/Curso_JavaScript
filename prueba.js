@@ -7,12 +7,7 @@ class VENTA {
     this.precio = precio
     this.precioPromocional = precioPromocional
     this.cantidad = cantidad
-    if (this.precioPromocional == 0) {
-      this.subTotal = this.cantidad * this.precio
-    }
-    else {
-      this.subTotal = this.cantidad * this.precioPromocional
-    }
+    this.subTotal = this.cantidad * this.precioPromocional    
   }
   actualizarCantidad(signo) {
     if (signo == "+") {
@@ -34,20 +29,147 @@ class VENTA {
 }
 
 //MAIN
+const STOCK = document.querySelector("#listaJuegos")
+const CARRO = document.querySelector("#detallePintar")
 let carrito = []
-$(document).ready(() => {
-  pintarJuegos()
-  agregarCarrito()
-  eliminarCarrito()
-  aumentarCantidad()
-  disminuirCantidad()
-})
+
+obtenerLocal()
+pintarJuegos()
+agregarCarrito()
+eliminarCarrito()
 
 //FUNCTIONS
+async function pintarJuegos() {
+  const resp = await fetch('./BD.json')
+  const data = await resp.json()
+  let cadena = ""
+  data.forEach(juego => {
+    if (juego.descuento == 0) {
+      cadena += `<div class="juego">
+        <div class="juegoContenedor">
+          <div class="juego-logo">
+            <img src="${juego.imagen}" alt="${juego.nombre}">
+            <div class="juego-logo-precio">
+              <p>$${juego.precio}</p>
+            </div>
+          </div>
+          <button id="${juego.idJuego}" class="juego-botonVenta">COMPRAR</button>
+        </div>
+      </div>`;
+    }
+    else {
+      cadena += `<div class="juego">
+        <div class="juegoContenedor">
+          <div class="juego-logo">
+            <img src="${juego.imagen}" alt="${juego.nombre}">
+            <div class="juego-logo-descuento">
+              <div class="juego-logo-descuento-contenedor">
+                <p>-${juego.descuento * 100}%</p>
+              </div>
+            </div>
+            <div class="juego-logo-precio">
+              <p>$${juego.precioPromocional}</p>
+            </div>
+          </div>
+          <button id="${juego.idJuego}" class="juego-botonVenta">COMPRAR</button>
+        </div>
+      </div>`;
+    }
+  })
+  STOCK.innerHTML = cadena
+}
+
+function pintarCarrito(juego) {
+  let cadena = ""
+  if (juego.length != 0) {
+    let total = 0
+    juego.forEach(juego => {
+      if (juego.precioPromocional != juego.precio) {
+        cadena += `<div class="detalle">
+          <div class="detalle-nombre">
+            <p>${juego.nombre}</p>
+          </div>
+          <div class="detalle-precio">
+            <div class="detalle-precio-antes">
+              <p>$${juego.precio}</p>
+            </div>
+            <div class="detalle-precio-ahora">
+              <p>$${juego.precioPromocional}</p>
+            </div>
+          </div>
+          <div class="detalle-cantidad">
+            <button id="-${juego.idVenta}" class="menos">-</button>
+            <p>${juego.cantidad}</p>
+            <button id="+${juego.idVenta}" class="mas">+</button>
+          </div>
+          <div class="detalle-subTotal">
+            <p>$${juego.subTotal}</p>
+          </div>
+          <div class="detalle-eliminar">
+            <button id="${juego.idVenta}" class="eliminar">X</button>
+          </div>
+        </div>`
+      }
+      else {
+        cadena += `<div class="detalle">
+          <div class="detalle-nombre">
+            <p>${juego.nombre}</p>
+          </div>
+          <div class="detalle-precio">
+            <div class="detalle-precio-ahora">
+              <p>$${juego.precio}</p>
+            </div>
+          </div>
+          <div class="detalle-cantidad">
+            <button id="-${juego.idVenta}" class="menos">-</button>
+            <p>${juego.cantidad}</p>
+            <button id="+${juego.idVenta}" class="mas">+</button>
+          </div>
+          <div class="detalle-subTotal">
+            <p>$${juego.subTotal}</p>
+          </div>
+          <div class="detalle-eliminar">
+            <button id="${juego.idVenta}" class="eliminar">X</button>
+          </div>
+        </div>`
+      }
+      total = total + juego.subTotal
+    })
+    cadena += `<div class="detalle">
+      <div class="detalle-nombre">
+        <p></p>
+      </div>
+      <div class="detalle-precio">
+        <div class="detalle-precio-antes">
+          <p></p>
+        </div>
+        <div class="detalle-precio-ahora">
+          <p></p>
+        </div>
+      </div>
+      <div class="detalle-cantidad">
+        <p>TOTAL</p>
+      </div>
+      <div class="detalle-subTotal">$${total}</div>
+      <div class="detalle-eliminar"></div>
+    </div>
+    <button id="terminar" class="terminar">FINALIZAR COMPRA</button>`
+  }
+  CARRO.innerHTML = cadena
+}
+function obtenerLocal() {
+  let local = JSON.parse(localStorage.getItem("CARRO"))
+  if (local != null) {
+    local.forEach(juego=>{
+      carrito.push(new VENTA(juego.idVenta,juego.idJuego,juego.nombre,juego.precio,juego.precioPromocional,juego.cantidad))
+    })   
+    pintarCarrito(carrito)
+  }  
+}
 async function agregarCarrito() {
   const resp = await fetch('./BD.json')
   const data = await resp.json()
-  $("#listaJuegos").click((e) => {
+  STOCK.addEventListener("click", (e) => {
     if (e.target.classList.contains("juego-botonVenta")) {
       let compra = data.find(juego => juego.idJuego == (e.target.id))
       let verificar = carrito.indexOf(carrito.find(juego => juego.idJuego == (e.target.id)))
@@ -67,12 +189,13 @@ async function agregarCarrito() {
         icon: "success",
         title: "Producto Añadido"
       });
+      localStorage.setItem("CARRO", JSON.stringify(carrito))
       pintarCarrito(carrito)
     }
   })
 }
 function eliminarCarrito() {
-  $("#detallePintar").click((e) => {
+  CARRO.addEventListener("click", (e) => {
     if (e.target.classList.contains("eliminar")) {
       let indice = carrito.indexOf(carrito.find(venta => venta.idVenta == (e.target.id)))
       Swal.fire({
@@ -98,60 +221,54 @@ function eliminarCarrito() {
             showConfirmButton: false,
             timer: 2000
           })
-          carrito.splice(indice, 1)
+          carrito.splice(indice, 1)          
+          if(carrito.length==0){
+            localStorage.clear()
+          }
+          else{
+            localStorage.setItem("CARRO", JSON.stringify(carrito))
+          }
           pintarCarrito(carrito)
         }
       })
     }
+    disminuirCantidad(e)
+    aumentarCantidad(e)
+    terminar(e)
   })
 }
-function disminuirCantidad() {
-  $("#detallePintar").click((e) => {
-    if (e.target.classList.contains("menos")) {
-      let indice = carrito.indexOf(carrito.find(venta => ("-" + venta.idVenta) == (e.target.id)))
-      if (carrito[indice].cantidad != 1) {
-        carrito[indice].actualizarCantidad("-")
-        pintarCarrito(carrito)
-      }
-    }
-  })
-}
-function aumentarCantidad() {
-  $("#detallePintar").click((e) => {
-    if (e.target.classList.contains("mas")) {
-      let indice = carrito.indexOf(carrito.find(venta => ("+" + venta.idVenta) == (e.target.id)))
-      carrito[indice].actualizarCantidad("+")
+function disminuirCantidad(event) {
+  if (event.target.classList.contains("menos")) {
+    let indice = carrito.indexOf(carrito.find(venta => ("-" + venta.idVenta) == (event.target.id)))
+    if (carrito[indice].cantidad != 1) {
+      carrito[indice].actualizarCantidad("-")
+      localStorage.setItem("CARRO", JSON.stringify(carrito))
       pintarCarrito(carrito)
     }
-  })
+  }
 }
-async function pintarJuegos() {
-  const resp = await fetch('./BD.json')
-  const data = await resp.json()
-  let cadena = ""
-  data.forEach(juego => {
-    if (juego.descuento == 0) {
-      cadena += '<div class="juego"><div class="juegoContenedor"><div class="juego-logo"><img src="' + juego.imagen + '" alt=' + juego.nombre + '><div class="juego-logo-precio"><p>$' + juego.precio + '</p></div></div><button id="' + juego.idJuego + '" class="juego-botonVenta">COMPRAR</button></div></div>';
-    }
-    else {
-      cadena += '<div class="juego"><div class="juegoContenedor"><div class="juego-logo"><img src="' + juego.imagen + '" alt=' + juego.nombre + '><div class="juego-logo-descuento"><div class="juego-logo-descuento-contenedor"><p>-' + (juego.descuento * 100) + '%</p></div></div><div class="juego-logo-precio"><p>$' + juego.precioPromocional + '</p></div></div><button id="' + juego.idJuego + '" class="juego-botonVenta">COMPRAR</button></div></div>';
-    }
-  })
-  $("#listaJuegos").html(cadena)
+function aumentarCantidad(event) {
+  if (event.target.classList.contains("mas")) {
+    let indice = carrito.indexOf(carrito.find(venta => ("+" + venta.idVenta) == (event.target.id)))
+    carrito[indice].actualizarCantidad("+")
+    localStorage.setItem("CARRO", JSON.stringify(carrito))
+    pintarCarrito(carrito)
+  }
 }
-
-function pintarCarrito(juego) {
-  let cadena = ""
-  let total = 0
-  juego.forEach(juego => {
-    if (juego.precioPromocional != 0) {
-      cadena += '<div class="detalle"><div class="detalle-nombre"><p>' + juego.nombre + '</p></div><div class="detalle-precio"><div class="detalle-precio-antes"><p>$' + juego.precio + '</p></div><div class="detalle-precio-ahora"><p>$' + juego.precioPromocional + '</p></div></div><div class="detalle-cantidad"><button id="-' + juego.idVenta + '" class="menos">-</button><p>' + juego.cantidad + '</p><button id="+' + juego.idVenta + '" class="mas">+</button></div><div class="detalle-subTotal"><p>$' + juego.subTotal + '</p></div><div class="detalle-eliminar"><button id="' + juego.idVenta + '" class="eliminar">X</button></div></div>'
-    }
-    else {
-      cadena += '<div class="detalle"><div class="detalle-nombre"><p>' + juego.nombre + '</p></div><div class="detalle-precio"><div class="detalle-precio-ahora"><p>$' + juego.precio + '</p></div></div><div class="detalle-cantidad"><button id="-' + juego.idVenta + '" class="menos">-</button><p>' + juego.cantidad + '</p><button id="+' + juego.idVenta + '" class="mas">+</button></div><div class="detalle-subTotal"><p>$' + juego.subTotal + '</p></div><div class="detalle-eliminar"><button id="' + juego.idVenta + '" class="eliminar">X</button></div></div>'
-    }
-    total = total + juego.subTotal
-  })
-  cadena += '<div class="detalle"><div class="detalle-nombre"><p></p></div><div class="detalle-precio"><div class="detalle-precio-antes"><p></p></div><div class="detalle-precio-ahora"><p></p></div></div><div class="detalle-cantidad"><p>TOTAL</p></div><div class="detalle-subTotal">$' + total + '</div><div class="detalle-eliminar"></div></div>'
-  $("#detallePintar").html(cadena)
+function terminar(event) {
+  if (event.target.classList.contains("terminar")) {
+    swal.fire({
+      toast: true,
+      position: "top-end",
+      background: "black",
+      color: "white",
+      showConfirmButton: false,
+      timer: 2000,
+      icon: "success",
+      title: "Compra Finalizada"
+    });
+    carrito = []
+    localStorage.clear()
+    CARRO.innerHTML = ""
+  }
 }
